@@ -1,4 +1,4 @@
-import { normalizePort } from '../../helpers';
+import { normalizePort } from '@/helpers';
 
 export const env = {
   server: {

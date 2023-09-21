@@ -1,21 +1,21 @@
 import express from 'express';
-const router = express.Router();
+const usersRouter = express.Router();
 
 const users: { [key: string]: unknown }[] = [];
 
 /* GET users listing. */
-router.get('/', function(req, res) {
+usersRouter.get('/', function(req, res) {
   res.send(users);
 });
 
-router.get('/:id', function(req, res) {
+usersRouter.get('/:id', function(req, res) {
   const userId = req.params.id;
   const user = users.find(user => user.id == userId);
   if (user) res.send(user);
   else res.status(404).send('Not found');
 });
 
-router.put('/:id', function(req, res) {
+usersRouter.put('/:id', function(req, res) {
   const userId = req.params.id;
   const userIndex = users.findIndex(user => user.id == userId);
   if (userIndex >= 0) {
@@ -29,7 +29,7 @@ router.put('/:id', function(req, res) {
   }
 });
 
-router.delete('/:id', function(req, res) {
+usersRouter.delete('/:id', function(req, res) {
   const userId = req.params.id;
   const userIndex = users.findIndex(user => user?.id == userId);
   if (userIndex >= 0) {
@@ -41,7 +41,7 @@ router.delete('/:id', function(req, res) {
   }
 });
 
-router.post('/', function(req, res) {
+usersRouter.post('/', function(req, res) {
   const newUser = req.body;
   if (Object.keys(newUser).includes('id')) {
     users.push(newUser);
@@ -51,4 +51,4 @@ router.post('/', function(req, res) {
   }
 });
 
-export default router;
+export { usersRouter };

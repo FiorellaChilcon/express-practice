@@ -1,5 +1,5 @@
-import { AppDataSource } from './infra/data-source';
-import { server, port } from './main/config';
+import { AppDataSource } from '@/infra/data-source';
+import { server, port } from '@/main/config';
 
 AppDataSource.initialize().then(async () => {
   /**

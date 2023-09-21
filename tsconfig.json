@@ -20,7 +20,12 @@
       "noImplicitOverride": true,
       "removeComments": true,
       "incremental": true,
-      "strictPropertyInitialization": false
+      "strictPropertyInitialization": false,
+      "rootDirs": ["src"],
+      "baseUrl": "src",
+      "paths": {
+         "@/*": ["*"]
+       },
    },
    "compileOnSave": false
 }

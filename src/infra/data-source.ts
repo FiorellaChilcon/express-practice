@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { User } from './entity';
-import { env } from '../main/config';
+import { User } from '@/infra/entity';
+import { env } from '@/main/config';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
