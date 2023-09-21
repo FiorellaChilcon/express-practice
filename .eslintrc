@@ -1,0 +1,23 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": { 
+    "@typescript-eslint/no-explicit-any": 0,
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "quotes": [2, "single"],
+    "semi": ["error", "always"],
+    "eol-last": ["error", "always"],
+    "comma-dangle": ["error", "never"]
+  }
+}

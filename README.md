@@ -4,5 +4,6 @@
 ## Tech Stack
 - Node.js
 - Express
-- Javascript
-
+- Javascript / Typescript
+- PostgreSQL
+- TypeORM
