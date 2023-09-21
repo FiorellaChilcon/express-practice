@@ -1,54 +1,56 @@
+import { UserRepository } from '@/infra/repos';
 import express from 'express';
 const usersRouter = express.Router();
 
-const users: { [key: string]: unknown }[] = [];
-
 /* GET users listing. */
-usersRouter.get('/', function(req, res) {
-  res.send(users);
+usersRouter.get('/', async function (req, res) {
+  const users = new UserRepository();
+  const response = await users.findAll();
+  res.send(response);
 });
 
-usersRouter.get('/:id', function(req, res) {
+usersRouter.get('/:id', async function(req, res) {
   const userId = req.params.id;
-  const user = users.find(user => user.id == userId);
+  const users = new UserRepository();
+  const user = await users.findOneById(userId);
   if (user) res.send(user);
   else res.status(404).send('Not found');
 });
 
-usersRouter.put('/:id', function(req, res) {
+usersRouter.put('/:id', async function(req, res) {
   const userId = req.params.id;
-  const userIndex = users.findIndex(user => user.id == userId);
-  if (userIndex >= 0) {
-    const newAttributes = req.body;
-    const user = users[userIndex];
-    const userUpdated  = { ...user, ...newAttributes };
-    users[userIndex] = userUpdated;
-    res.send(users[userIndex]);
+  const newAttributes = req.body;
+
+  const users = new UserRepository();
+  const user = await users.updateById(userId, newAttributes);
+
+  if (user) {
+    res.send(user);
   } else {
     res.status(404).send('Not found');
   }
 });
 
-usersRouter.delete('/:id', function(req, res) {
+usersRouter.delete('/:id', async function(req, res) {
   const userId = req.params.id;
-  const userIndex = users.findIndex(user => user?.id == userId);
-  if (userIndex >= 0) {
-    const userToDelete = users[userIndex];
-    users.splice(userIndex, 1);
-    res.send(userToDelete);
+
+  const users = new UserRepository();
+  const user = await users.deleteById(userId);
+
+  if (user) {
+    res.send(user);
   } else {
     res.status(404).send('Not found');
   }
 });
 
-usersRouter.post('/', function(req, res) {
+usersRouter.post('/', async function(req, res) {
   const newUser = req.body;
-  if (Object.keys(newUser).includes('id')) {
-    users.push(newUser);
-    res.send(newUser);
-  } else {
-    res.status(400).send('Bad request');
-  }
+
+  const users = new UserRepository();
+  const user = await users.create(newUser);
+
+  res.send(user);
 });
 
 export { usersRouter };
