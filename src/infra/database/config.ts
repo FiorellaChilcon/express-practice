@@ -1,9 +1,8 @@
 import 'reflect-metadata';
-import { DataSource } from 'typeorm';
 import { User } from '@/infra/entity';
 import { env } from '@/main/config';
 
-export const AppDataSource = new DataSource({
+export const dbConfig = {
   type: 'postgres',
   host: env.database.host,
   port: env.database.port,
@@ -15,4 +14,4 @@ export const AppDataSource = new DataSource({
   entities: [User],
   migrations: [],
   subscribers: []
-});
+};

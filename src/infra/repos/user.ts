@@ -1,12 +1,17 @@
-import { AppDataSource } from '@/infra/data-source';
 import { User } from '@/infra/entity';
 import { Repository } from 'typeorm';
+import { PgManager } from '@/infra/database';
 
 export class UserRepository {
   repo: Repository<User>;
 
-  constructor() {
-    this.repo = AppDataSource.getRepository(User);
+  /**
+   * @description Initialize user repository
+   * @param manager To use this repository with transactions,
+   * pass your PgManager instance so operations are called from the same query runner
+   */
+  constructor(manager?: PgManager) {
+    this.repo = manager ? manager.getRepository(User) : new PgManager().getRepository(User);
   }
 
   async create(input: Partial<User>): Promise<User> {

@@ -1,3 +1,4 @@
+import { PgManager } from '@/infra/database';
 import { UserRepository } from '@/infra/repos';
 import express from 'express';
 const usersRouter = express.Router();
@@ -29,12 +30,16 @@ usersRouter.put('/:id', async function(req, res, next) {
   try {
     const userId = req.params.id;
     const newAttributes = req.body;
+
+    const manager = new PgManager();
+    const result = await manager.handleTransaction(async () => {
+      const users = new UserRepository(manager);
+      const user = await users.updateById(userId, newAttributes);
+      return user;
+    });
   
-    const users = new UserRepository();
-    const user = await users.updateById(userId, newAttributes);
-  
-    if (user) {
-      res.send(user);
+    if (result) {
+      res.send(result);
     } else {
       res.status(404).send('Not found');
     }
@@ -47,11 +52,15 @@ usersRouter.delete('/:id', async function(req, res, next) {
   try {
     const userId = req.params.id;
   
-    const users = new UserRepository();
-    const user = await users.deleteById(userId);
+    const manager = new PgManager();
+    const result = await manager.handleTransaction(async () => {
+      const users = new UserRepository(manager);
+      const user = users.deleteById(userId);
+      return user;
+    });
   
-    if (user) {
-      res.send(user);
+    if (result) {
+      res.send(result);
     } else {
       res.status(404).send('Not found');
     }
@@ -64,10 +73,12 @@ usersRouter.post('/', async function(req, res, next) {
   try {
     const newUser = req.body;
   
-    const users = new UserRepository();
-    const user = await users.create(newUser);
-  
-    res.send(user);
+    const manager = new PgManager();
+    await manager.handleTransaction(async () => {
+      const users = new UserRepository(manager);
+      const user = await users.create(newUser);
+      res.send(user);
+    });
   } catch(err) {
     next(err);
   }
