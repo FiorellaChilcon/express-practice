@@ -1,9 +1,6 @@
-import { AppDataSource } from '@/infra/data-source';
 import { server, port } from '@/main/config';
+import { PgManager } from '@/infra/database';
 
-AppDataSource.initialize().then(async () => {
-  /**
-   * Listen on provided port, on all network interfaces.
-   */
+PgManager.connect().then(() => {
   server.listen(port);
 }).catch(error => console.log(error));
