@@ -10,5 +10,9 @@ export const env = {
     name: process.env.DB_NAME,
     host: process.env.POSTGRESQL_HOST || 'localhost',
     port: normalizePort(process.env.DB_PORT || '5432')
+  },
+  jwt: {
+    secretKey: process.env.JWT_SECRET_KEY || 'jwt',
+    expiresIn: Number(process.env.JWT_EXPIRES_IN) || 43200 // seconds => 12h
   }
 };
