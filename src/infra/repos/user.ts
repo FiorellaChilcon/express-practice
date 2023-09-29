@@ -1,5 +1,5 @@
 import { User } from '@/infra/entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { PgManager } from '@/infra/database';
 
 export class UserRepository {
@@ -30,12 +30,29 @@ export class UserRepository {
     return user;
   }
 
+  async findOneByEmailOrUsername(userId: string): Promise<User | null> {
+    const user = await this.repo
+      .createQueryBuilder('user')
+      .where('user.email = :email', { email: userId })
+      .orWhere('user.username = :username', { username: userId })
+      .getOne();
+
+    return user;
+  }
+
+  async findOne(query: FindOptionsWhere<User>): Promise<User | null> {
+    const user = await this.repo.findOne({ where: query });
+    return user;
+  }
+
   async updateById(id: string, input: Partial<User>): Promise<User | null> {
     const user = await this.repo.findOneBy({ id });
     if (user) {
       user.firstName = input.firstName ?? user.firstName;
       user.lastName = input.lastName ?? user.lastName;
-      user.age = input.age ?? user.age;
+      user.username = input.username ?? user.username;
+      user.email = input.email ?? user.email;
+      user.password = input.password ?? user.password;
       await user.save();
     }
 

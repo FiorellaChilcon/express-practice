@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Index, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { BcryptGateway } from '@/infra/gateways/bcrypt';
 
 @Entity()
 export class User extends BaseEntity {
@@ -11,6 +12,20 @@ export class User extends BaseEntity {
   @Column()
     lastName: string;
 
+  @Index('username_index')
+  @Column({ unique: true })
+    username: string;
+
+  @Index('email_index')
+  @Column({ unique: true })
+    email: string;
+
   @Column()
-    age: number;
+    password: string;
+
+  @BeforeUpdate()
+  @BeforeInsert()
+  hashPassword() {
+    this.password = BcryptGateway.hash(this.password);
+  }
 }
