@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 export class TokenGateway {
   constructor(private jwtSecret: string, private expiresIn: number) {}
 
-  createToken(user: UserModel, type: TokenType) {
+  createToken(user: UserModel, type: TokenType): Token {
     const expiresIn = env.jwt.expiresIn;
     const createdAt = Date.now();
     const expiresAt = new Date(createdAt + this.expiresIn * 1000);

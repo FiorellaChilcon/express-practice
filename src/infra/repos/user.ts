@@ -30,6 +30,16 @@ export class UserRepository {
     return user;
   }
 
+  async findOneByEmailOrUsername(userId: string): Promise<User | null> {
+    const user = await this.repo
+      .createQueryBuilder('user')
+      .where('user.email = :email', { email: userId })
+      .orWhere('user.username = :username', { username: userId })
+      .getOne();
+
+    return user;
+  }
+
   async findOne(query: FindOptionsWhere<User>): Promise<User | null> {
     const user = await this.repo.findOne({ where: query });
     return user;
@@ -41,6 +51,8 @@ export class UserRepository {
       user.firstName = input.firstName ?? user.firstName;
       user.lastName = input.lastName ?? user.lastName;
       user.username = input.username ?? user.username;
+      user.email = input.email ?? user.email;
+      user.password = input.password ?? user.password;
       await user.save();
     }
 

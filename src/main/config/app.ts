@@ -1,33 +1,28 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
-import { usersRouter, rootRouter, signUpRouter } from '@/main/routes';
-import { QueryFailedError } from 'typeorm';
-import { DataConflictError, DataValidationError } from '@/domain/errors';
+import { usersRouter, rootRouter, signUpRouter, signInRouter } from '@/main/routes';
+import { authMiddleware, errorMiddleware } from '@/main/middlewares';
 
 const app = express();
 
+/** Middlewares */
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+/** Middlewares */
 
 /** Routes */
 app.use('/', rootRouter);
 app.use('/sign-up', signUpRouter);
-app.use('/users', usersRouter);
+app.use('/sign-in', signInRouter);
+app.use('/users', authMiddleware, usersRouter);
 /** Routes */
 
-app.use((err: any, req: Request, res: Response, _: any) => {
-  if (err instanceof DataValidationError || err instanceof DataConflictError) {
-    err.sendResponse(res);
-  } else if (err instanceof QueryFailedError) {
-    res.status(400).send({ error: 'Query execution has failed', message: err?.message });
-  } else {
-    const statusCode = err?.statusCode || 500;
-    res.status(statusCode).json({ message: err?.message || err });
-  }
-});
+/** Error handler */
+app.use(errorMiddleware);
+/** Error handler */
 
 export { app };

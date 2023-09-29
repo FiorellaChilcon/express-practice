@@ -14,12 +14,14 @@ signUpRouter.post('/', async function(req, res, next) {
   try {
     const newUser = req.body;
     const validation = signupValidator.validate(newUser);
+
     if (validation.error) {
       throw new DataValidationError({ errors: validation.error.details });
     }
 
     const users = new UserRepository();
 
+    // Verify if email or username is already registered
     if (await users.findOne({ email: newUser.email })) {
       throw new DataConflictError({ message: 'email already registered' });
     }
@@ -27,6 +29,7 @@ signUpRouter.post('/', async function(req, res, next) {
       throw new DataConflictError({ message: 'username already in used' });
     }
 
+    // Save user and provide token
     const pgManager = new PgManager();
     const tokenGateway = new TokenGateway(env.jwt.secretKey, env.jwt.expiresIn);
 
