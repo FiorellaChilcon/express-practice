@@ -16,6 +16,8 @@
       "jsonwebtoken": "^9.0.2",
       "morgan": "~1.9.1",
       "pg": "^8.4.0",
+      "redis": "^4.6.10",
+      "redis-om": "^0.4.2",
       "reflect-metadata": "^0.1.13",
       "typeorm": "0.3.17"
    },
