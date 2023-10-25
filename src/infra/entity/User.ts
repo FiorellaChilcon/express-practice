@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Index, BeforeInsert, BeforeUpdate } from 'typeorm';
-import { BcryptGateway } from '@/infra/gateways/bcrypt';
+import { BcryptGateway } from '@/infra/gateways';
 
 @Entity()
 export class User extends BaseEntity {

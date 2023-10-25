@@ -14,5 +14,8 @@ export const env = {
   jwt: {
     secretKey: process.env.JWT_SECRET_KEY || 'jwt',
     expiresIn: Number(process.env.JWT_EXPIRES_IN) || 43200 // seconds => 12h
+  },
+  redis: {
+    url: process.env.REDIS_URL
   }
 };

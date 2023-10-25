@@ -5,7 +5,7 @@ import { DataValidationError, NotFoundError, UnauthorizedError } from '@/domain/
 import { TokenGateway } from '@/infra/gateways';
 import { env } from '@/main/config';
 import { User } from '@/domain/models';
-import { BcryptGateway } from '@/infra/gateways/bcrypt';
+import { BcryptGateway } from '@/infra/gateways';
 import { TokenType } from '@/domain/contracts/models';
 
 const signInRouter = express.Router();
