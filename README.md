@@ -19,3 +19,15 @@
 - RedisInsight: We'll use this to look inside Redis and make sure our code is doing what we think it's doing.
 - [PgAdmin](https://www.pgadmin.org/download/): To manage our database
 - [Postman](https://www.postman.com/): To test endpoints
+- [Docker](https://www.docker.com/products/docker-desktop/) To run the app within a container
+
+## Get started
+There are 2 ways you can start the app:
+```
+npm install
+npm start
+```
+or...
+```
+docker compose up
+```
