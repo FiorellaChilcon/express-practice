@@ -20,5 +20,8 @@
     "eol-last": ["error", "always"],
     "comma-dangle": ["error", "never"],
     "@typescript-eslint/no-unused-vars": 1
+  },
+  "env": {
+    "node": true
   }
 }
