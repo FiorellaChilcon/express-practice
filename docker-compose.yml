@@ -10,6 +10,7 @@ services:
       - "8000:3000"
     volumes:
       - ./:/app
+      - /app/node_modules
   redis:
     container_name: app-redis
     image: "redis:alpine"
